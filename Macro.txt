@@ -1,0 +1,53 @@
+Sub InsertImages()
+Dim doc As Word.Document
+Dim fd As FileDialog
+Set fd = Application.FileDialog(msoFileDialogFilePicker)
+Set doc = ActiveDocument
+Dim vrtSelectedItem As Variant
+Dim theText() As String
+Dim theText2 As String
+Dim startPosition
+Dim endPosition
+
+  
+With fd
+.Filters.Add "All Files", "*.*", 1
+
+.FilterIndex = 1
+ 
+If .Show = -1 Then
+ 
+For Each vrtSelectedItem In .SelectedItems
+ 
+ 
+     
+Set mg2 = ActiveDocument.Range(0)
+mg2.Collapse wdCollapseEnd
+ 
+
+doc.InlineShapes.AddOLEObject _
+FileName:=vrtSelectedItem, _
+LinkToFile:=True, DisplayAsIcon:=True, Range:=mg2, IconFileName:= _
+        "C:\Program Files\Google\Picasa3\PicasaPhotoViewer.exe", IconIndex:=-19
+        
+
+
+    
+Set mg1 = ActiveDocument.Range
+mg1.Collapse wdCollapseEnd
+mg1.MoveEnd Unit:=wdCharacter, Count:=0
+ 
+theText() = Split(vrtSelectedItem, "\")
+theText2 = theText(UBound(theText))
+theText2 = Left(theText2, InStrRev(theText2, ".") - 1)
+ 
+mg1.Text = Chr(13) + Chr(10) + theText2 + Chr(13) + Chr(10) + Chr(13) + Chr(10)
+ 
+Next vrtSelectedItem
+Else
+End If
+End With
+ 
+Set fd = Nothing
+ 
+End Sub
